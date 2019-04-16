@@ -18,11 +18,12 @@ const ipToInt = ip => {
 // Tests
 
 const tests = [
-  ['127.0.0.1',      2130706433,  'Localhost IP address'  ],
-  ['10.0.0.1',        167772161,  'Single class A network'],
-  ['192.168.1.10',  -1062731510,  'Negative number'       ],
-  ['0.0.0.0',                 0,  'Four zeros'            ],
-  ['8.8.8.8',        0x08080808,  'Four eights'           ],
+  ['127.0.0.1',        2130706433,  'Localhost IP address'  ],
+  ['10.0.0.1',          167772161,  'Single class A network'],
+  ['192.168.1.10',    -1062731510,  'Negative number'       ],
+  ['0.0.0.0',                   0,  'Four zeros'            ],
+  ['255.255.255.255',          -1,  'Four 255'              ],
+  ['8.8.8.8',          0x08080808,  'Four eights'           ],
 ];
 
 for (const test of tests) {
