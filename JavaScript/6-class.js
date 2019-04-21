@@ -122,11 +122,11 @@ const testExecuteTask = next => {
       assert.ok(scheduler.tasks.get('name1').running);
     } catch (err) {
       error = err;
-    } finally {
-      clearTimeout(timer);
-      done(null, 'task successed');
-      next(error);
     }
+    clearTimeout(timer);
+    done(null, 'task successed');
+    scheduler.stopAll();
+    next(error);
   });
 };
 
@@ -146,12 +146,12 @@ const testFailedTask = next => {
   scheduler.on('error', (err, task) => {
     let error = null;
     try {
-      console.dir({ task });
       assert.strictEqual(err.message, 'Task failed');
     } catch (err) {
       error = err;
     }
     clearTimeout(timer);
+    scheduler.stopAll();
     next(error);
   });
 };
