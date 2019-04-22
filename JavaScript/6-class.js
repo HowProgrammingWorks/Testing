@@ -146,6 +146,7 @@ const testFailedTask = next => {
   scheduler.on('error', (err, task) => {
     let error = null;
     try {
+      assert.ok(task.running);
       assert.strictEqual(err.message, 'Task failed');
     } catch (err) {
       error = err;
