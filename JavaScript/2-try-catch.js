@@ -5,7 +5,7 @@ const assert = require('assert').strict;
 // Convert IP string to number
 //   ip <string> - IP address
 // Returns: <number>
-const ipToInt = ip => ip.split('.')
+const ipToInt = (ip) => ip.split('.')
   .reduce((res, item) => (res << 8) + +item, 0);
 
 // Tests

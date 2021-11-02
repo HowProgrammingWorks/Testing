@@ -5,12 +5,12 @@ const assert = require('assert').strict;
 // Convert IP string to number
 //   ip <string> - IP address
 // Returns: <number>
-const ipToInt = ip => {
-  if (typeof(ip) !== 'string') throw Error('String expected');
+const ipToInt = (ip) => {
+  if (typeof ip !== 'string') throw Error('String expected');
   if (ip === '') throw Error('Empty is not allowed');
   const parts = ip.split('.');
   if (parts.length !== 4) throw Error('Wrong IPv4 format');
-  const nums = parts.map(n => parseInt(n, 10));
+  const nums = parts.map((n) => parseInt(n, 10));
   if (nums.includes(NaN)) throw Error('Wrong IPv4 format');
   return nums.reduce((res, item) => (res << 8) + item);
 };

@@ -21,9 +21,11 @@ class Task extends EventEmitter {
     this.count = 0;
     this.timer = null;
   }
+
   get active() {
     return !!this.timer;
   }
+
   start() {
     this.stop();
     if (this.running) return false;
@@ -34,16 +36,18 @@ class Task extends EventEmitter {
     }, time);
     return true;
   }
+
   stop() {
     if (!this.active || this.running) return false;
     this.clear(this.timer);
     this.timer = null;
     return true;
   }
+
   run() {
     if (!this.active || this.running) return false;
     this.running = true;
-    this.exec(err  => {
+    this.exec((err)  => {
       if (err) this.emit('error', err, this);
       this.count++;
       this.running = false;
@@ -57,16 +61,18 @@ class Scheduler extends EventEmitter {
     super();
     this.tasks = new Map();
   }
+
   task(name, time, exec) {
     this.stop(name);
     const task = new Task(name, time, exec);
     this.tasks.set(name, task);
-    task.on('error', err => {
+    task.on('error', (err) => {
       this.emit('error', err, task);
     });
     task.start();
     return task;
   }
+
   stop(name) {
     const task = this.tasks.get(name);
     if (task) {
@@ -74,6 +80,7 @@ class Scheduler extends EventEmitter {
       this.tasks.delete(name);
     }
   }
+
   stopAll() {
     for (const name of this.tasks.keys()) {
       this.stop(name);
@@ -83,7 +90,7 @@ class Scheduler extends EventEmitter {
 
 // Tests
 
-const testCreateTask = next => {
+const testCreateTask = (next) => {
   const timer = setTimeout(() => {
     const err = new Error('Can not create task');
     assert.fail(err);
@@ -92,7 +99,7 @@ const testCreateTask = next => {
 
   const scheduler = new Scheduler();
 
-  scheduler.task('name1', '2019-04-16T18:30Z', done => {
+  scheduler.task('name1', '2019-04-16T18:30Z', (done) => {
     done(null, 'task successed');
   });
 
@@ -107,7 +114,7 @@ const testCreateTask = next => {
   }
 };
 
-const testExecuteTask = next => {
+const testExecuteTask = (next) => {
   const timer = setTimeout(() => {
     const err = new Error('Can not execute task');
     assert.fail(err);
@@ -116,7 +123,7 @@ const testExecuteTask = next => {
 
   const scheduler = new Scheduler();
 
-  scheduler.task('name1', 100, done => {
+  scheduler.task('name1', 100, (done) => {
     let error = null;
     try {
       assert.ok(scheduler.tasks.get('name1').running);
@@ -130,7 +137,7 @@ const testExecuteTask = next => {
   });
 };
 
-const testFailedTask = next => {
+const testFailedTask = (next) => {
   const timer = setTimeout(() => {
     const err = new Error('Task expected to fail');
     assert.fail(err);
@@ -139,7 +146,7 @@ const testFailedTask = next => {
 
   const scheduler = new Scheduler();
 
-  scheduler.task('name1', 100, done => {
+  scheduler.task('name1', 100, (done) => {
     done(new Error('Task failed'));
   });
 
@@ -175,7 +182,7 @@ const runNext = () => {
   const test = tests.shift();
   console.log(`Started test: ${test.name}`);
   try {
-    test(err => {
+    test((err) => {
       if (err) {
         failed++;
         console.log(`Failed test: ${test.name}`);
